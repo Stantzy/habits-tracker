@@ -38,7 +38,7 @@ public class ConsoleUI {
         System.out.println(USER_MENU);
     }
 
-    public void start() {
+    public void start() throws SQLException {
         Scanner userInput = new Scanner(System.in);
         printWelcomeMessage();
         printUserMenu();
@@ -69,57 +69,41 @@ public class ConsoleUI {
         }
     }
 
-    private void updateHabits() {
-        try {
-            Set<Habit> habits = habitDAO.getAllHabits();
-            for(Habit h : habits) {
-                String title = h.getTitle();
-                habitManager.addHabit(title);
-                Set<LocalDate> dates = h.getCompletedDates();
-                for(LocalDate date : dates)
-                    habitManager.markCompleted(title, date);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    private void updateHabits() throws SQLException {
+        Set<Habit> habits = habitDAO.getAllHabits();
+        for(Habit h : habits) {
+            String title = h.getTitle();
+            habitManager.addHabit(title);
+            Set<LocalDate> dates = h.getCompletedDates();
+            for(LocalDate date : dates)
+                habitManager.markCompleted(title, date);
         }
     }
 
-    private void handleMarkHabit(Scanner userInput) {
+    private void handleMarkHabit(Scanner userInput) throws SQLException {
         System.out.print("Enter the habit to mark: ");
         String habitTitleToMark = userInput.nextLine();
         System.out.print("Enter date in following format <dd-mm-yyyy> or <today>: ");
         String dateToMark = userInput.nextLine();
 
         markHabit(habitTitleToMark, dateToMark);
-        try {
-            Habit habit = habitManager
-                    .getHabits()
-                    .get(habitTitleToMark.toLowerCase(Locale.ROOT));
-            LocalDate localDate = Utils.getLocalDateFromString(dateToMark);
-            habitDAO.saveDate(habit, localDate);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Habit habit = habitManager
+                .getHabits()
+                .get(habitTitleToMark.toLowerCase(Locale.ROOT));
+        LocalDate localDate = Utils.getLocalDateFromString(dateToMark);
+        habitDAO.saveDate(habit, localDate);
     }
 
-    private void handleAddHabit(Scanner userInput) {
+    private void handleAddHabit(Scanner userInput) throws SQLException {
         String habitTitleToAdd = userInput.nextLine();
         Habit habit;
         habit = habitManager.addHabit(habitTitleToAdd);
-        try {
-            habitDAO.saveHabit(habit);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        habitDAO.saveHabit(habit);
     }
 
-    private void handleDeleteHabit(Scanner userInput) {
+    private void handleDeleteHabit(Scanner userInput) throws SQLException {
         String habitTitleToDelete = userInput.nextLine();
-        try {
-            habitDAO.deleteHabitByTitle(habitTitleToDelete);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        habitDAO.deleteHabitByTitle(habitTitleToDelete);
         habitManager.deleteHabit(habitTitleToDelete);
     }
 

@@ -10,8 +10,8 @@ public class DatabaseManager {
     private Connection connection;
     private boolean existFlag = false;
 
-    public DatabaseManager(String dbPath) {
-        this.dbPath = dbPath;
+    public DatabaseManager(String directoryPath) {
+        this.dbPath = directoryPath + System.getProperty("user.name") + ".db";
         url = "jdbc:sqlite:" + dbPath;
         existFlag = Utils.checkFile(dbPath);
     }
@@ -31,7 +31,6 @@ public class DatabaseManager {
             }
             existFlag = Utils.checkFile(dbPath);
         } catch (SQLException | ClassNotFoundException e) {
-            System.err.println("Error connecting to the database");
             throw new RuntimeException(e);
         }
     }
