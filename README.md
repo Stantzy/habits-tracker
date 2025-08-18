@@ -21,7 +21,7 @@ mvn clean package
 ```bash
 java --enable-native-access=ALL-UNNAMED -jar target/habits-tracker-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
-## Or Docker
+## Docker
 1. Clone repository:
 ```bash
 git clone https://github.com/Stantzy/habits-tracker.git
