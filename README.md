@@ -21,7 +21,20 @@ mvn clean package
 ```bash
 java --enable-native-access=ALL-UNNAMED -jar target/habits-tracker-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
-
+## Or Docker
+1. Clone repository:
+```bash
+git clone https://github.com/Stantzy/habits-tracker.git
+cd habits-tracker
+```
+2. Build image:
+```bash
+docker build -t habits-tracker-image .
+```
+3. Run in interactive mode:
+```bash
+docker run -it --rm habits-tracker-image bash
+```
 ## Simple CLI
 ```
 Database connected.
