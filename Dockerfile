@@ -8,8 +8,6 @@ RUN apt-get update && \
 	apt-get install -y maven && \
 	rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /root/.habits_tracker
-
 WORKDIR /app
 
 COPY . .

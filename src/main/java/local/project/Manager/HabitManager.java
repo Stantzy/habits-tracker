@@ -1,5 +1,7 @@
-package local.project.Habit;
+package local.project.Manager;
 
+import local.project.Entity.Habit;
+import local.project.Entity.User;
 import local.project.Utils.Utils;
 
 import java.time.LocalDate;
@@ -15,8 +17,8 @@ public class HabitManager {
         habits = new HashMap<>();
     }
 
-    public Habit addHabit(String title) {
-        habits.put(title.toLowerCase(Locale.ROOT), new Habit(title));
+    public Habit addHabit(int id, String title, User user) {
+        habits.put(title.toLowerCase(Locale.ROOT), new Habit(id, title, user));
         return habits.get(title.toLowerCase(Locale.ROOT));
     }
 
@@ -57,11 +59,13 @@ public class HabitManager {
         return habit != null && habit.getCompletedDates().contains(LocalDate.now());
     }
 
-    public void printStatusForToday() {
+    public void printStatusForToday(int userId) {
         Set<String> habitsTitles = habits.keySet();
         System.out.println("Status for today:");
         for(String title : habitsTitles) {
-            System.out.println(title + " : " + isCompletedToday(title));
+            Habit habit = habits.get(title);
+            if(habit.getUserId() == userId)
+                System.out.println(title + " : " + isCompletedToday(title));
         }
     }
 }
